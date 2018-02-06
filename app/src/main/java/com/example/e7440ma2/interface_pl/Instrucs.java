@@ -15,7 +15,7 @@ public class Instrucs extends AppCompatActivity {
         Button bnext = (Button) findViewById(R.id.bnext);
         bnext.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent i = new Intent(Instrucs.this, Traject.class);
+                Intent i = new Intent(Instrucs.this, PlotActivity.class);
                 startActivity(i);
             }
         });
