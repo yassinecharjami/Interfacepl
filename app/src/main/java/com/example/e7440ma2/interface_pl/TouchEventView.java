@@ -38,7 +38,7 @@ public class TouchEventView extends View {
         paint.setColor(Color.BLACK);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5f);
+        paint.setStrokeWidth(15f);
     }
 
     @Override
@@ -102,6 +102,10 @@ public class TouchEventView extends View {
         float xPos = event.getX();
         float yPos = event.getY();
         listCoord.add(new Coord(xPos, yPos));
+
+        String message = String.format("Coordinates: (x = %.2f, y = %.2f))",xPos,yPos);
+
+        Log.i(PlotActivity.DEBUGTAG, message);
 
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
