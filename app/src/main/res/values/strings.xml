@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Interface-pl</string>
+    <string name="projet_long_craa">Projet Long CRAA</string>
+    <string name="start">Start</string>
+    <string name="don_t_show_again">Don\'t show again</string>
+    <string name="double_clique_pour_sauter">- Double clique pour sauter</string>
+    <string name="title_activity_traject">Traject</string>
+</resources>

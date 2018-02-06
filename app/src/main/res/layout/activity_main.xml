@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/robot"
+    android:orientation="vertical"
+    tools:context="com.example.e7440ma2.interface_pl.MainActivity">
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jumping Sumo Android"
+        android:textColor="@color/DarkCyan"
+        android:textSize="40dp"
+        android:textAlignment="center"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="350dp" />
+
+    <Button
+        android:id="@+id/bstart"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/BlanchedAlmond"
+        android:text="@string/start"
+        android:textStyle="italic"
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="434dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Version 0.1"
+        android:textAlignment="center"
+        android:textColor="@color/Black"
+        android:textSize="15dp" />
+
+
+</LinearLayout>
