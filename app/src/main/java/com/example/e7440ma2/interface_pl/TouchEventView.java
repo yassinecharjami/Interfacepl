@@ -51,11 +51,12 @@ public class TouchEventView extends View {
         invalidate();
     }
 
- /*   public void savetofile()
+
+    public void savetofile()
     {
         final File path =
                 Environment.getExternalStoragePublicDirectory
-                        ( Environment.DIRECTORY_DOWNLOADS );
+                        ( Environment.DIRECTORY_DCIM );
 
         final File file = new File(path, "coord.txt");
         try
@@ -64,9 +65,9 @@ public class TouchEventView extends View {
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
             for(Coord c : listCoord){
                 myOutWriter.append(NEW_LINE_SEPARATOR);
-                myOutWriter.append(String.valueOf(c.getX()));
+                myOutWriter.append(String.valueOf(c.getA()));
                 myOutWriter.append(COMMA_DELIMITER);
-                myOutWriter.append(String.valueOf(c.getY()));
+                myOutWriter.append(String.valueOf(c.getB()));
             }
             myOutWriter.close();
             fOut.flush();
@@ -76,24 +77,23 @@ public class TouchEventView extends View {
         {
             Log.e("Exception", "File write failed: " + e.toString());
         }
-    } */
+    }
 
- /*  public void savefile() {
+   public void savefile() {
         try {
             FileWriter fileWriter = new FileWriter("C:\\Users\\E7440MA2\\AndroidStudioProjects\\Interfacepl\\app\\src\\main\\java\\com\\example\\e7440ma2\\interface_pl\\coord.csv",true);
-            fileWriter.append(FILE_HEADER);
             for(Coord c : listCoord){
                 fileWriter.append(NEW_LINE_SEPARATOR);
-                fileWriter.append(String.valueOf(c.getX()));
+                fileWriter.append(String.valueOf(c.getA()));
                 fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(c.getY()));
+                fileWriter.append(String.valueOf(c.getB()));
             }
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    } */
+    }
 
 
 
@@ -123,4 +123,6 @@ public class TouchEventView extends View {
         invalidate();
         return true;
     }
+
+
 }

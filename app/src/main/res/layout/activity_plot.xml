@@ -31,9 +31,10 @@
         tools:layout_editor_absoluteY="447dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/enreg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="enregInfo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"

@@ -8,28 +8,28 @@ import java.util.*;
 
 public class Coord {
 
-    private float x;
-    private float y;
+    private float a;
+    private float b;
 
-    public float getX() {
-        return x;
+    public Coord(float a, float b) {
+        this.a = a;
+        this.b = b;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public float getA() {
+        return a;
     }
 
-    public float getY() {
-        return y;
+    public void setA(float a) {
+        this.a = a;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public float getB() {
+        return b;
     }
 
-    public Coord(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public void setB(float b) {
+        this.b = b;
     }
 
     public Coord() {
