@@ -94,7 +94,7 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), fileName);
 
         try {
-         /*   FileOutputStream fos = new FileOutputStream(file);
+         /* FileOutputStream fos = new FileOutputStream(file);
             fos.write("yassine".getBytes());
             fos.close(); */
             FileOutputStream fOut = new FileOutputStream(file);
