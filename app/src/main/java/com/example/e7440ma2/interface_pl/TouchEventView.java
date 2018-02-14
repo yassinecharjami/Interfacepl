@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,10 @@ import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
 import static android.content.ContentValues.TAG;
+import static java.lang.Math.PI;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 /**
  * Created by E7440MA2 on 02/02/2018.
@@ -72,14 +78,36 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
                   axPos = xPos;
                   ayPos = yPos;
         }else if(yas==0){
+
+            float angle,anglerad, radius, lineangle;
+
+            //values to change for other appearance *CHANGE THESE FOR OTHER SIZE ARROWHEADS*
+            radius=100;
+            angle=15;
+
+            //some angle calculations
+            anglerad= (float) (PI*angle/180.0f);
+            lineangle= (float) (atan2(yPos-ayPos,xPos-axPos));
+
+            //création de la flèche
             Paint p = new Paint();
             p.setAntiAlias(true);
-            p.setColor(Color.MAGENTA);
+            p.setColor(Color.DKGRAY);
             p.setStrokeJoin(Paint.Join.ROUND);
             p.setStyle(Paint.Style.STROKE);
             p.setStrokeWidth(15f);
-            canvas.drawLine(axPos,ayPos,xPos, yPos, p);
+           canvas.drawLine(axPos,ayPos,xPos, yPos, p);
+           //triangle
+            Path pat = new Path();
+            pat.setFillType(Path.FillType.EVEN_ODD);
+            pat.moveTo(xPos, yPos);
+            pat.lineTo((float)(xPos-radius*cos(lineangle - (anglerad / 2.0))),
+                    (float)(yPos-radius*sin(lineangle - (anglerad / 2.0))));
+            pat.lineTo((float)(xPos-radius*cos(lineangle + (anglerad / 2.0))),
+                    (float)(yPos-radius*sin(lineangle + (anglerad / 2.0))));
+            pat.close();
 
+            canvas.drawPath(pat, p);
         }
     }
 
