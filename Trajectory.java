@@ -86,13 +86,37 @@ public class Trajectory {
 		return(pointsDeControle);
 	}
 	
-	public Trajectory spline(int degre, int nbPoints, Point[] pointsDeControle) {
+	public Trajectory spline(int degre, int nbPoints, Point[] pointsDeControle, double[] tempsDeControle) {
 		Point[] coordonnees = new Point[nbPoints];
+		int size = tempsDeControle.length;
 		for (int t = 0; t < nbPoints; t++) {
-			if (degre==0) {
-				
+			double[][] coeff = new double[size][degre+1];
+			/* calcul de bj_0 */
+			for (int j = 0; j < size-1; j++) {
+				if ((tempsDeControle[j]<= t)&&(tempsDeControle[j+1]>t)) {
+					coeff[j][0]=1;
+				}
+				else {
+					coeff[j][0]=0;
+				}
+			}
+			/* calcul des bj */
+			for (int n = 1; n < degre; n++) {
+				for (int j = 0; j < pointsDeControle.length; j++) {
+					double tj = tempsDeControle[j];
+					double tj1 = tempsDeControle[j+1];
+					double tjn = tempsDeControle[j+n];
+					double tjn1 = tempsDeControle[j+n+1];
+					coeff[j][n]=(t-tj)/(tjn-tj)*coeff[j][n-1]+(tjn1 - t)/(tjn1-tj1)*coeff[j+1][n-1];
+				}
+			}
+			coordonnees[t] = new Point(0,0);
+			for (int i=0; i<pointsDeControle.length; i++) {
+				coordonnees[t] = coordonnees[t].add(pointsDeControle[i].multiply(coeff[i][degre]));
 			}
 		}
+		return new Trajectory(nbPoints, coordonnees);
+		
 	}
 	
 }
