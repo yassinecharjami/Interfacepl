@@ -5,4 +5,6 @@
     <string name="don_t_show_again">Don\'t show again</string>
     <string name="double_clique_pour_sauter">- Double clique pour sauter</string>
     <string name="title_activity_traject">Traject</string>
+    <string name="title_activity_enregistrer_coord_txt">EnregistrerCoordTxt</string>
+    <string name="title_activity_save">SaveActivity</string>
 </resources>

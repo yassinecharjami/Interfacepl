@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Instrucs" />
-        <activity android:name=".PlotActivity"></activity>
+        <activity android:name=".PlotActivity" />
+        <activity android:name=".SaveActivity"></activity>
     </application>
 
 </manifest>

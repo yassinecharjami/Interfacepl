@@ -3,7 +3,7 @@ package com.example.e7440ma2.interface_pl;
 import java.util.*;
 
 /**
- * Created by E7440MA2 on 06/02/2018.
+ * Created by Yassinec on 06/02/2018.
  */
 
 public class Coord {

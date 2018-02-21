@@ -5,33 +5,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.*;
 import java.util.*;
 import java.io.File;
-import java.io.FileWriter;
-import static android.content.ContentValues.TAG;
 import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 /**
- * Created by E7440MA2 on 02/02/2018.
+ * Created by Yassinec on 02/02/2018.
  */
 
 public class TouchEventView extends View implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener{
@@ -39,13 +32,16 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     String NEW_LINE_SEPARATOR = "\n";
     private Paint paint = new Paint();
     private Path path = new Path();
+    private Path pat = new Path();
+    private Path patt = new Path();
+    private Paint p = new Paint();
     List<Coord> listCoord = new ArrayList<>();
+    List<Double> ptc = new ArrayList<>();
     GestureDetector mGestureDetector = new GestureDetector(getContext(),this);
     float xPos,yPos;
-    public static int yas = 3;
-    float axPos=0, ayPos=0;
+    float yas = 3;
+    float axPos=0, ayPos=0, pxPos=0, pyPos=0;
     String sama = "x = " + xPos + "  " +"y = "+ yPos;
-
 
 
     public TouchEventView(Context context, @Nullable AttributeSet attrs) {
@@ -55,18 +51,14 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(15f);
+        //fleche
+        p.setAntiAlias(true);
+        p.setColor(Color.DKGRAY);
+        p.setStrokeJoin(Paint.Join.ROUND);
+        p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(15f);
+        pat.setFillType(Path.FillType.EVEN_ODD);
     }
- /*   public void jump(int x) {
-        TextView message = null;
-        PlotActivity act = new PlotActivity();
-        if (x != 0) {
-            message = (TextView) act.findViewById(R.id.textView);
-            message.setText("Jump");
-        } else {
-            message.setText(sama);
-        }
-    } */
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -78,41 +70,30 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
                   axPos = xPos;
                   ayPos = yPos;
         }else if(yas==0){
-
-            float angle,anglerad, radius, lineangle;
-
-            //values to change for other appearance *CHANGE THESE FOR OTHER SIZE ARROWHEADS*
-            radius=100;
-            angle=15;
-
-            //some angle calculations
-            anglerad= (float) (PI*angle/180.0f);
-            lineangle= (float) (atan2(yPos-ayPos,xPos-axPos));
-
             //création de la flèche
-            Paint p = new Paint();
-            p.setAntiAlias(true);
-            p.setColor(Color.DKGRAY);
-            p.setStrokeJoin(Paint.Join.ROUND);
-            p.setStyle(Paint.Style.STROKE);
-            p.setStrokeWidth(15f);
-           canvas.drawLine(axPos,ayPos,xPos, yPos, p);
+           pat.moveTo(axPos, ayPos);
+           pat.lineTo(pxPos,pyPos);
+           pat.close();
+           canvas.drawPath(pat,p);
            //triangle
-            Path pat = new Path();
-            pat.setFillType(Path.FillType.EVEN_ODD);
-            pat.moveTo(xPos, yPos);
-            pat.lineTo((float)(xPos-radius*cos(lineangle - (anglerad / 2.0))),
-                    (float)(yPos-radius*sin(lineangle - (anglerad / 2.0))));
-            pat.lineTo((float)(xPos-radius*cos(lineangle + (anglerad / 2.0))),
-                    (float)(yPos-radius*sin(lineangle + (anglerad / 2.0))));
-            pat.close();
-
-            canvas.drawPath(pat, p);
+           float angle=15, radius=100;
+            float anglerad= (float) (PI*angle/180.0f);
+            float lineangle= (float) (atan2(pyPos-ayPos,pxPos-axPos));
+            patt.setFillType(Path.FillType.EVEN_ODD);
+            patt.moveTo(pxPos, pyPos);
+            patt.lineTo((float)(pxPos-radius*cos(lineangle - (anglerad / 2.0))),
+                    (float)(pyPos-radius*sin(lineangle - (anglerad / 2.0))));
+            patt.lineTo((float)(pxPos-radius*cos(lineangle + (anglerad / 2.0))),
+                    (float)(pyPos-radius*sin(lineangle + (anglerad / 2.0))));
+            patt.close();
+            canvas.drawPath(patt, p);
         }
     }
 
     public void clearCanvas() {
         path.reset();
+        pat.reset();
+        patt.reset();
         invalidate();
     }
 
@@ -145,62 +126,56 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
 
     }
 
-    public void savetofile() {
-        String filename = "yassine.txt";
-        final File path =
-                Environment.getExternalStoragePublicDirectory
-                        (Environment.DIRECTORY_DOWNLOADS);
+    // Convertir les coordonnées
+    Float xfloat[] = new Float[100];
+    Float yfloat[] = new Float[100];
+    double ptcontr[] = new double[100];
+    double x[] = new double[100];
 
-        if (!path.exists()) {
-            path.mkdir();
-            if(path.mkdir()==false){
-                Log.i(PlotActivity.DEBUGTAG, "directorydoesnotexist");}
-
+    public Trajectory data(){
+        Point[] coord = new Point[listCoord.size()];
+        for (int i=0; i<listCoord.size();i++) {
+            xfloat[i] = listCoord.get(i).getA();
+            yfloat[i] = listCoord.get(i).getB();
         }
-
-        final File file = new File(path, filename);
-        try {
-            FileOutputStream fOut = new FileOutputStream(file);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.append("yassine");
-             for (Coord c : listCoord) {
-                myOutWriter.append(NEW_LINE_SEPARATOR);
-                myOutWriter.append(String.valueOf(c.getA()));
-                myOutWriter.append(COMMA_DELIMITER);
-                myOutWriter.append(String.valueOf(c.getB()));
-            }
-            myOutWriter.close();
-            fOut.flush();
-            fOut.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
+        for(int i=0; i<listCoord.size(); i++){
+            Point pointCourant = new Point(xfloat[i],yfloat[i]);
+            coord[i] = pointCourant;
         }
+        return new Trajectory(listCoord.size(), coord);
     }
 
- /*   public void savefile() {
-        try {
-            FileWriter fileWriter = new FileWriter(Environment.getExternalStorageDirectory()+"/crd.txt", true);
-            for (Coord c : listCoord) {
-                fileWriter.append(NEW_LINE_SEPARATOR);
-                fileWriter.append(String.valueOf(c.getA()));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(c.getB()));
-            }
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    //convertir les points de controle en array
+
+    public double[] ptcontrole(Point[] pc) {
+
+        for (int i = 0; i < pc.length ; i++) {
+            x[i] = pc[i].getCoordinates()[i];
         }
+
+        return x;
     }
-*/
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
           xPos = event.getX();
           yPos = event.getY();
         listCoord.add(new Coord(xPos, yPos));
         mGestureDetector.onTouchEvent(event);
-        String message = String.format("Coordinates: (x = %.2f, y = %.2f))", xPos, yPos);
-         Log.i(PlotActivity.DEBUGTAG, message);
+        // affichage des points de controle
+        Trajectory traj = this.data();
+        int sz = traj.getSize();
+        Point[] pc = traj.pointsDeControle(1);
+        int pt = pc.length;
+        ptcontr = this.ptcontrole(pc);
+
+        Log.d("Trajectory class test", "trajectory size:" + sz);
+        Log.d("Trajectory class test", "point de controle size:" + pt);
+        Log.d("Trajectory class test", "point de controle: " + Arrays.toString(ptcontr));
+        Log.d("x", "xfloat: " + Arrays.toString(xfloat));
+        Log.d("y", "yfloat" + Arrays.toString(yfloat));
+       // String message = String.format(Locale.FRANCE,"Coordinates: (x = %.2f, y = %.2f,size=%d ))", xPos, yPos,listCoord.size() );
+      //  Log.i(PlotActivity.DEBUGTAG, message);
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -233,8 +208,9 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent motionEvent) {
-        yas = 1;
+         yas = 1;
         Log.i(PlotActivity.DEBUGTAG, "jump");
+
         return true;
     }
 
@@ -260,6 +236,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
+        pxPos = xPos;
+        pyPos = yPos;
         yas = 0;
     }
 
@@ -267,4 +245,6 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         return true;
     }
+
+
 }
