@@ -15,6 +15,8 @@ public class Point {
 
 	/* Get the coordinates of the point */
 
+
+
 	public double[] getCoordinates(){
 		double coordinates[] = {this.x, this.y};
 		return coordinates;

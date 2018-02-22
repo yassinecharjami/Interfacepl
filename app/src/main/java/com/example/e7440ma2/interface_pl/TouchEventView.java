@@ -36,7 +36,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     private Path patt = new Path();
     private Paint p = new Paint();
     List<Coord> listCoord = new ArrayList<>();
-    List<Double> ptc = new ArrayList<>();
+    List<Double> ptcx = new ArrayList<>();
+    List<Double> ptcy = new ArrayList<>();
     GestureDetector mGestureDetector = new GestureDetector(getContext(),this);
     float xPos,yPos;
     float yas = 3;
@@ -129,8 +130,12 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     // Convertir les coordonnées
     Float xfloat[] = new Float[100];
     Float yfloat[] = new Float[100];
-    double ptcontr[] = new double[100];
-    double x[] = new double[100];
+    List<Double> ptcontr = new ArrayList<>();
+    Point[] pc = new Point[100];
+    double x[] = new double[pc.length];
+    double y[] = new double[pc.length];
+    double pctrl[] = new double[pc.length];
+    Map<String, Object> hash = new HashMap<String, Object>();
 
     public Trajectory data(){
         Point[] coord = new Point[listCoord.size()];
@@ -144,16 +149,19 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         }
         return new Trajectory(listCoord.size(), coord);
     }
-
-    //convertir les points de controle en array
-
-    public double[] ptcontrole(Point[] pc) {
-
-        for (int i = 0; i < pc.length ; i++) {
-            x[i] = pc[i].getCoordinates()[i];
+    int i=0;
+    public Map<String, Object> ptcontrol(Point[] ptcont){
+        for (Point pt: ptcont) {
+          x[i]=pt.getCoordinates()[0];
+          y[i]=pt.getCoordinates()[1];
+          i=i+1;
         }
 
-        return x;
+        hash.put("xarray", x);
+        hash.put("yarray", y);
+
+        return hash;
+
     }
 
     @Override
@@ -165,13 +173,12 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         // affichage des points de controle
         Trajectory traj = this.data();
         int sz = traj.getSize();
-        Point[] pc = traj.pointsDeControle(1);
+        pc = traj.pointsDeControle(1);
         int pt = pc.length;
-        ptcontr = this.ptcontrole(pc);
-
+      //  pctrl = this.ptcontrol(pc);
         Log.d("Trajectory class test", "trajectory size:" + sz);
         Log.d("Trajectory class test", "point de controle size:" + pt);
-        Log.d("Trajectory class test", "point de controle: " + Arrays.toString(ptcontr));
+        //Log.d("x", "point control: " + Arrays.toString(pctrl));
         Log.d("x", "xfloat: " + Arrays.toString(xfloat));
         Log.d("y", "yfloat" + Arrays.toString(yfloat));
        // String message = String.format(Locale.FRANCE,"Coordinates: (x = %.2f, y = %.2f,size=%d ))", xPos, yPos,listCoord.size() );
@@ -246,5 +253,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         return true;
     }
 
+    public void sendCoord(){
+
+    }
 
 }
