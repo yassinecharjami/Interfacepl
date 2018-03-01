@@ -91,7 +91,7 @@ public class PlotActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch(item.getItemId()){ 
             case R.id.ctrlpt:
                 Toast.makeText(this, "choosing point control degree", Toast.LENGTH_SHORT).show();
                 return true;
