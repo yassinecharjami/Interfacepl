@@ -42,8 +42,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     float dpt = 0;
     float axPos=0, ayPos=0, pxPos=0, pyPos=0;
     String sama = "x = " + xPos + "  " +"y = "+ yPos;
-    int coeff=1;
-
+    int coeff=1,arrow_i=0, arrow_k=0;
+    float arrow_x, arrow_y;
 
     public TouchEventView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -51,7 +51,7 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         paint.setColor(Color.BLACK);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(15f);
+        paint.setStrokeWidth(17f);
         //Arrow
         p.setAntiAlias(true);
         p.setColor(Color.DKGRAY);
@@ -104,6 +104,28 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
                 canvas.drawPath(pcircle,paintpt);
             }
         }
+ /*     if(dpt == 1) {
+
+            Bitmap arrow_bm = BitmapFactory.decodeResource(getResources(), R.drawable.disque);
+            Bitmap arrow_bmm = Bitmap.createScaledBitmap(arrow_bm, 100, 100, true);
+            canvas.drawBitmap(arrow_bmm, arrow_x, arrow_y, null);
+            moveBmx(arrow_i, arrow_x);moveBmy(arrow_k, arrow_y);
+            arrow_x = this.moveBmx(arrow_i,arrow_x);
+            arrow_y = this.moveBmy(arrow_k,arrow_y);
+            arrow_i = arrow_i + 1;
+            arrow_k = arrow_k + 1;
+            invalidate();
+        } */
+    }
+
+    //Functions return arrow_x & arrow_y to Move arrow on drawable Line
+    public float moveBmx(int i, float x){
+        x = xfloat[i];
+        return x;
+    }
+    public float moveBmy(int k, float y){
+        y = yfloat[k];
+        return y;
     }
 
     //Clear point of control table
@@ -131,6 +153,7 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     public void controlcoeff(int x){
         coeff = x;
     }
+
     // Save Coordinates as a TextFile
     public void savefilee(String filename){
         String fileName = filename + ".txt";

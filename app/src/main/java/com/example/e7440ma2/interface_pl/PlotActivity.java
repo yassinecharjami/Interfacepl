@@ -73,6 +73,7 @@ public class PlotActivity extends AppCompatActivity{
         myVectorx = (Vector<Double>) arrays.get("xarray");
         myVectory = (Vector<Double>) arrays.get("yarray");
         tev.displaycpp(myVectorx,myVectory);
+        Toast.makeText(this, "Touch Screen to display control points", Toast.LENGTH_SHORT).show();
         Log.d("x", "point control: " + Arrays.toString(pctrlx));
         Log.d("y", "point control: " + Arrays.toString(pctrly));
     }
