@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item android:id="@+id/ctrlpt"
+              android:orderInCategory="100"
+              android:title="control point"
+              app:showAsAction="never">
+            <menu>
+                <item
+                    android:id="@+id/c1"
+                    android:title="1"
+                    />
+                <item
+                    android:id="@+id/c2"
+                    android:title="2"
+                    />
+                <item
+                    android:id="@+id/c3"
+                    android:title="3"
+                    />
+                <item
+                    android:id="@+id/c4"
+                    android:title="4"
+                    />
+                <item
+                    android:id="@+id/c5"
+                    android:title="5"
+                    />
+            </menu>
+        </item>
+
+        <item android:id="@+id/intermeth"
+            android:orderInCategory="100"
+            android:title="interpolation method"
+            app:showAsAction="never">
+            <menu>
+                <item
+                    android:id="@+id/bezier"
+                    android:title="Bezier"
+                    />
+                <item
+                    android:id="@+id/spline"
+                    android:title="Spline"
+                    />
+            </menu>
+        </item>
+
+</menu>
