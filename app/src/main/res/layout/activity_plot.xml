@@ -20,7 +20,7 @@
         android:layout_centerHorizontal="true"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -51,6 +51,16 @@
         android:layout_marginBottom="37dp"
         android:text="Play the plot"
         android:onClick="sendCoord"
+        />
+
+    <Button
+        android:id="@+id/movectrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/canva"
+        android:layout_centerHorizontal="true"
+        android:text="Move control points"
+        android:onClick="plotptctrl"
         />
 
 

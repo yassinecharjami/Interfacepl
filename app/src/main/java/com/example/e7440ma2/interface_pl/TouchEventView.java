@@ -32,18 +32,24 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     private Paint p = new Paint();
     private Paint paintpt = new Paint();
     Path pcircle = new Path();
+    private Paint paintnewpt = new Paint();
+    Path pnewcircle = new Path();
     List<Coord> listCoord = new ArrayList<>();
     Vector<Double> xtt =new Vector<Double>(1,1);
     Vector<Double> ytt =new Vector<Double>(1,1);
+    Vector<Double> newpcx = new Vector<Double>(1,1);
+    Vector<Double> newpcy = new Vector<Double>(1,1);
 
     GestureDetector mGestureDetector = new GestureDetector(getContext(),this);
     float xPos,yPos;
     float yas = 3;
-    float dpt = 0;
+    float dpt = 0, dptt=0, dpttt=0;
     float axPos=0, ayPos=0, pxPos=0, pyPos=0;
     String sama = "x = " + xPos + "  " +"y = "+ yPos;
     int coeff=1,arrow_i=0, arrow_k=0;
     float arrow_x, arrow_y;
+    int movectr=0;
+    int clickctr=0;
 
     public TouchEventView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -67,6 +73,14 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         paintpt.setStrokeWidth(50f);
         // point
         pcircle.setFillType(Path.FillType.EVEN_ODD);
+        // Control Point
+        paintnewpt.setAntiAlias(true);
+        paintnewpt.setColor(Color.GREEN);
+        paintnewpt.setStrokeJoin(Paint.Join.ROUND);
+        paintnewpt.setStyle(Paint.Style.STROKE);
+        paintnewpt.setStrokeWidth(50f);
+        // point
+        pnewcircle.setFillType(Path.FillType.EVEN_ODD);
     }
 
     @Override
@@ -97,34 +111,54 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
             canvas.drawPath(patt, p);
         }
         if(dpt==1){
-            for(int i=0; i<xpp.length; i++){
-              //  canvas.drawPoint((float) xpp[i],(float) ypp[i],paintpt);
-                pcircle.addCircle((float) xpp[i],(float) ypp[i], 20, Path.Direction.CCW);
-                pcircle.close();
-                canvas.drawPath(pcircle,paintpt);
+            if(dpttt==1) {
+                for (int i = 0; i < xpp.length; i++) {
+                    //  canvas.drawPoint((float) xpp[i],(float) ypp[i],paintpt);
+                    pcircle.addCircle((float) xpp[i], (float) ypp[i], 20, Path.Direction.CCW);
+                    pcircle.close();
+                    canvas.drawPath(pcircle, paintpt);
+                }
+            }
+            if(dptt==1) {
+                Bitmap arrow_bm = BitmapFactory.decodeResource(getResources(), R.drawable.disque);
+                Bitmap arrow_bmm = Bitmap.createScaledBitmap(arrow_bm, 100, 100, true);
+                canvas.drawBitmap(arrow_bmm, arrow_x, arrow_y, null);
+                moveBmx(arrow_i, arrow_x);
+                moveBmy(arrow_k, arrow_y);
+                arrow_x = this.moveBmx(arrow_i, arrow_x);
+                arrow_y = this.moveBmy(arrow_k, arrow_y);
+                if (arrow_i < xfloat.length) arrow_i = arrow_i + 1;
+                if (arrow_k < yfloat.length) arrow_k = arrow_k + 1;
+                invalidate();
             }
         }
- /*     if(dpt == 1) {
 
-            Bitmap arrow_bm = BitmapFactory.decodeResource(getResources(), R.drawable.disque);
-            Bitmap arrow_bmm = Bitmap.createScaledBitmap(arrow_bm, 100, 100, true);
-            canvas.drawBitmap(arrow_bmm, arrow_x, arrow_y, null);
-            moveBmx(arrow_i, arrow_x);moveBmy(arrow_k, arrow_y);
-            arrow_x = this.moveBmx(arrow_i,arrow_x);
-            arrow_y = this.moveBmy(arrow_k,arrow_y);
-            arrow_i = arrow_i + 1;
-            arrow_k = arrow_k + 1;
+        if(movectr==1){
+            if(clickctr==1){
+            pnewcircle.addCircle(xPos, yPos, 20, Path.Direction.CCW);
+            newpcx.add((double)xPos);newpcy.add((double)yPos);
+            pnewcircle.close();
+            canvas.drawPath(pnewcircle,paintnewpt);
             invalidate();
-        } */
+            }
+        }
     }
+
+    //Plot new control Points
+    public void plotctrlpt(){
+        movectr=1;
+    }
+
 
     //Functions return arrow_x & arrow_y to Move arrow on drawable Line
     public float moveBmx(int i, float x){
-        x = xfloat[i];
+        if(i<xfloat.length) x = xfloat[i];
+        else dptt=0;
         return x;
     }
     public float moveBmy(int k, float y){
-        y = yfloat[k];
+        if(k<yfloat.length) y = yfloat[k];
+        else dptt=0;
         return y;
     }
 
@@ -132,10 +166,12 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
     public void clearTable(){
         for (int i=0; i<xpp.length; i++){
             xpp[i]=0; ypp[i]=0;
-            xtt.clear();
-            ytt.clear();
-            listCoord.clear();
+            xfloat[i]=Float.valueOf(0);yfloat[i]= Float.valueOf(0);
         }
+        arrow_i=0;arrow_k=0;arrow_x=0;arrow_y=0;
+        xtt.clear();
+        ytt.clear();
+        listCoord.clear();
     }
 
     // Clear Canvas
@@ -145,7 +181,11 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         patt.reset();
         pcircle.reset();
         dpt=0;
+        dptt=0;
         yas=3;
+        clickctr=0;
+        movectr=0;
+        pnewcircle.reset();
         invalidate();
     }
 
@@ -238,6 +278,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
                 }
             }
             dpt = 1;
+            dptt = 1;
+            dpttt = 1;
     }
     // Display Control points on screen
     public void displaycpp(Vector<Double> xp, Vector<Double> yp){
@@ -248,6 +290,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
                 ypp[i] = yp.get(i);
         }
         dpt = 1;
+        dptt = 1;
+        dpttt = 1;
     }
 
 
@@ -261,7 +305,12 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         Trajectory traj = this.data();
         int sz = traj.getSize();
         pc = traj.pointsDeControle(coeff);
+      //  Trajectory trajSpline = traj.spline(coeff,200,null, pc);
+      //  trajSpline.pointsDeControle(coeff);
+        // nbre de point/pts de controle + 1
         int pt = pc.length;
+      //  newpcx.toArray(new Double[newpcx.size()]);
+       // newpcy.toArray(new Double[newpcy.size()]);
       //  pctrl = this.ptcontrol(pc);
         Log.d("Trajectory class test", "trajectory size:" + sz);
         Log.d("Trajectory class test", "control point degree:" + coeff);
@@ -269,6 +318,8 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         //Log.d("x", "point control: " + Arrays.toString(pctrl));
         Log.d("x", "xfloat: " + Arrays.toString(xfloat));
         Log.d("y", "yfloat" + Arrays.toString(yfloat));
+        Log.d("x", "newcontrolpointx: " + Arrays.toString(newpcx.toArray(new Double[newpcx.size()])));
+        Log.d("y", "newcontrolpointy" + Arrays.toString(newpcy.toArray(new Double[newpcy.size()])));
        // String message = String.format(Locale.FRANCE,"Coordinates: (x = %.2f, y = %.2f,size=%d ))", xPos, yPos,listCoord.size() );
       //  Log.i(PlotActivity.DEBUGTAG, message);
 
@@ -293,6 +344,7 @@ public class TouchEventView extends View implements GestureDetector.OnGestureLis
         // Gestures , DoubleTap to jump
     @Override
     public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
+        clickctr=1;
         return true;
     }
 

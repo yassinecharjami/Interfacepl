@@ -7,13 +7,12 @@
     tools:context="com.example.e7440ma2.interface_pl.SaveActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editPlot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="" />
+        android:inputType="textAutoComplete" />
 
     <Button
         android:id="@+id/saveButton"
@@ -23,5 +22,6 @@
         android:background="@color/BlanchedAlmond"
         android:text="Save"
         android:textStyle="italic"
+        android:onClick="savePlot"
         android:textSize="30dp" />
 </LinearLayout>

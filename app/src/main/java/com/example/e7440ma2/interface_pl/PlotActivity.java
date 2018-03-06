@@ -19,10 +19,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import com.example.e7440ma2.interface_pl.activity.DeviceListActivity;
+
 public class PlotActivity extends AppCompatActivity{
 
     private GestureDetector mGestureDetector;
-    private TouchEventView tev;
+    public TouchEventView tev;
     private TextView message;
     private Button enreg;
     public static final String DEBUGTAG="JWP";
@@ -54,6 +56,11 @@ public class PlotActivity extends AppCompatActivity{
         mGestureDetector.setOnDoubleTapListener(eva);
     }
 
+  //Plot Control points
+    public void plotptctrl(View v){
+       tev.plotctrlpt();
+       tev.dpttt=0;
+    }
 
 
 
@@ -91,7 +98,7 @@ public class PlotActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){ 
+        switch(item.getItemId()){
             case R.id.ctrlpt:
                 Toast.makeText(this, "choosing point control degree", Toast.LENGTH_SHORT).show();
                 return true;
